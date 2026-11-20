@@ -6,10 +6,14 @@
   <meta name="theme-color" content="#f6f3ed">
   <meta name="description" content="Shop shoes and clothing at Maggie's Shoes and Clothings in Zambia.">
   <title>Maggie's Shoes &amp; Clothings | Style made yours</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="pwa.css">
 </head>
 <body>
   <div class="announcement">A little style goes a long way <span>✦</span> Proudly serving Zambia</div>
@@ -33,14 +37,13 @@
     <section class="newsletter"><p class="eyebrow">A NOTE FROM MAGGIE'S</p><h2>Little things, lovely style.</h2><p>Want to see what's new? Get in touch and we'll help you find the right fit.</p><a class="button button-light" href="#shop">Shop the collection <span>↗</span></a></section>
   </main>
   <footer><a class="brand footer-brand" href="#home"><span class="brand-mark">M</span><span class="brand-copy">MAGGIE'S<small>SHOES &amp; CLOTHINGS</small></span></a><p>Style for every day, from Zambia with love.</p><span>© <span id="year"></span> Maggie's Shoes &amp; Clothings</span></footer>
-
   <div class="overlay" id="overlay"></div>
   <aside class="cart-panel" id="cart-panel" aria-label="Shopping bag" aria-hidden="true"><div class="panel-header"><div><p class="eyebrow">YOUR PICKS</p><h2>Your bag <span id="bag-count-label">(0)</span></h2></div><button class="close-button" data-close aria-label="Close bag">×</button></div><div id="cart-items" class="cart-items"></div><div class="cart-bottom"><div class="subtotal"><span>Subtotal</span><strong id="cart-subtotal">K0</strong></div><p>Delivery arrangements and final total will be confirmed with Maggie's.</p><button class="button button-dark full-width" id="checkout-trigger">Continue to order <span>→</span></button></div></aside>
-
   <div class="modal-wrap" id="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title"><div class="modal checkout-modal"><button class="close-button modal-close" data-close aria-label="Close">×</button><p class="eyebrow">ALMOST YOURS</p><h2 id="checkout-title">Your order details</h2><p class="modal-intro">Send your order to Maggie's and we'll confirm availability, delivery, and payment with you.</p><form id="checkout-form"><label>Your name<input name="name" required autocomplete="name" placeholder="Your full name"></label><label>Phone number<input name="phone" required type="tel" autocomplete="tel" placeholder="e.g. 0977 123 456"></label><label>Town / delivery area<input name="location" required placeholder="e.g. Lusaka, Kabulonga"></label><label>Preferred payment<select name="payment" required><option value="">Choose a method</option><option>MTN Mobile Money</option><option>Airtel Money</option><option>Zamtel Kwacha</option><option>Cash on delivery / collection</option></select></label><label class="wide">Note for Maggie's <textarea name="note" rows="2" placeholder="Sizes, colour, or delivery details"></textarea></label><div class="checkout-total wide"><span>Item subtotal</span><strong id="checkout-subtotal">K0</strong></div><button class="button button-dark full-width wide" type="submit">Send order via WhatsApp <span>↗</span></button></form><p class="tiny-note">Mobile Money is arranged directly with the shop. Never share your PIN or one-time password.</p></div></div>
-
   <div class="modal-wrap" id="admin-modal" role="dialog" aria-modal="true" aria-labelledby="admin-title"><div class="modal admin-modal"><button class="close-button modal-close" data-close aria-label="Close">×</button><p class="eyebrow">SHOP OWNER</p><h2 id="admin-title">Manage your shop</h2><p class="modal-intro">Add products and set the WhatsApp number customers should use to send orders.</p><div class="notice"><strong>Important:</strong> Products and settings are saved in this browser only. To publish products for all customers and securely process payments, connect a shared database and a Zambia-supported payment provider before launching publicly.</div><form id="settings-form" class="settings-form"><label>Shop WhatsApp number (country code, digits only)<input name="whatsapp" inputmode="numeric" placeholder="260977123456"><small>Customers' order message opens in WhatsApp to this number.</small></label><button class="button button-outline" type="submit">Save shop number</button></form><div class="admin-divider"></div><h3 id="product-form-heading">Add a product</h3><form id="product-form" class="product-form"><input type="hidden" name="id"><label>Product name<input name="name" required maxlength="70" placeholder="e.g. Everyday leather sneakers"></label><div class="form-row"><label>Price (ZMW)<input name="price" required type="number" min="1" step="1" placeholder="350"></label><label>Category<select name="category" required><option>Shoes</option><option>Clothing</option><option>Accessories</option></select></label></div><label>Short description<input name="description" maxlength="130" placeholder="A few words about this piece"></label><label>Product photo<input name="image" type="file" accept="image/*"><small>Choose a clear photo from your phone or computer (up to 2 MB).</small></label><div id="image-preview" class="image-preview hidden"></div><div class="admin-form-actions"><button class="button button-dark" type="submit">Save product</button><button class="button button-outline hidden" id="cancel-edit" type="button">Cancel edit</button></div></form><div class="admin-divider"></div><div class="admin-list-heading"><h3>Your products</h3><span id="admin-product-count"></span></div><div id="admin-product-list" class="admin-product-list"></div></div></div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="config.js"></script>
   <script src="app.js"></script>
+  <script src="pwa.js"></script>
 </body>
 </html>

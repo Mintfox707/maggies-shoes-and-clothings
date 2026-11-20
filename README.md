@@ -1,23 +1,31 @@
 # Maggie's Shoes & Clothings
 
-Responsive Zambia-focused shoes and clothing storefront. The optional Supabase setup makes the product catalogue, uploaded photos, and shop WhatsApp number shared between devices, while owner-only product editing is protected by Supabase Auth and row-level security (RLS).
+Responsive Zambia-focused shoes and clothing storefront.
 
-## Connect shared products and photos
+## Install on Android or iPhone
 
-1. Create a Supabase project at [supabase.com](https://supabase.com/).
-2. In **Project Settings → API**, copy the Project URL and the **anon/public** key. Put them into `config.js`. The anon key is intended for browser use; never put a `service_role` key in this website.
-3. In Supabase **SQL Editor**, run the contents of `supabase/schema.sql`.
-4. In Supabase **Authentication → Users**, create the owner's email/password account. Copy that user's UUID and run the final `insert into public.shop_admins ...` statement in the SQL editor, substituting the UUID. Disable public sign-ups after creating the owner.
-5. Publish the repository using **Settings → Pages → Deploy from a branch → main → /(root)**. Open the published site; products and uploaded photos now load from Supabase for every visitor/device. Sign in through the menu icon to add/edit/delete products.
+The shop is a Progressive Web App (PWA). After it is published at an HTTPS address:
 
-The `product-images` storage bucket is public for product display; only the owner membership allowed by RLS can upload or change photos. Use small JPG, PNG, or WebP photos (up to 2 MB). Products that were previously saved in a browser's local storage do not automatically migrate; re-add them from the owner device after setup.
+1. Open the shop in Chrome or another compatible mobile browser.
+2. Tap **Install** in the header, or open the browser menu and choose **Install app** / **Add to Home screen**.
+3. Maggie's will appear on the home screen and open in its own app-style window.
 
-## Payments: important setup still required
+The PWA also works for basic browsing offline after its first successful visit. Product updates and checkout require an internet connection.
 
-Checkout currently sends an order request through WhatsApp and **does not collect or verify money**. No payment is marked as successful based on a screenshot, customer message, or browser request. To enable automatic verified payments, Maggie's must first register with a Zambia-supported payment provider (for example Ontech Payments, Digital PayGo, or Just-Tap), complete their merchant onboarding, and obtain their official API/webhook documentation and sandbox/live credentials. The secure server-side checkout and signed webhook must then be implemented for the chosen provider and deployed with its secrets stored as server-side environment variables (never in `config.js` or browser code).
+## Shared product setup
 
-Before implementing the provider-specific payment integration, choose your provider and share a link to its official API/webhook docs. Do not send API secrets, passwords, Mobile Money PINs, or OTPs in chat. The gateway must confirm the transaction server-to-server before an order is marked paid.
+1. Create a Supabase project at https://supabase.com.
+2. Copy the Project URL and anon/public key into `config.js`.
+3. Run `supabase/schema.sql` in the Supabase SQL Editor.
+4. Create the owner's email/password account, copy its UUID, and add it to `shop_admins`.
+5. Publish the repository using GitHub Pages.
 
-## Local preview
+Never place a Supabase `service_role` key in browser files.
 
-Open `index.html` in a browser for the local demo. Without Supabase config the sample products and browser-local editor work on that device only. No npm/build step is required. With Supabase configured, serve the repository over HTTPS (GitHub Pages is fine) and complete the setup above for shared data.
+## Google Play Store
+
+A PWA can be added to the Android home screen, but publishing the shop in Google Play requires an additional Android/TWA package, Play Store assets, a Play Developer account, app signing, and a privacy policy. The PWA is the first step toward that package.
+
+## Payment verification
+
+Checkout sends an order request through WhatsApp and does not verify money. Verified payments require a Zambia-supported gateway, merchant onboarding, a secure server endpoint, and signed webhook/status verification.
