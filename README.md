@@ -1,29 +1,23 @@
 # Maggie's Shoes & Clothings
 
-A responsive starter storefront for a Zambia-based shoes and clothing shop. It includes a product catalogue, category filters and search, a shopping bag, an owner product editor with photo uploads, and order handoff through WhatsApp with MTN Mobile Money, Airtel Money, Zamtel Kwacha, or cash selected as the customer's preferred payment method.
+Responsive Zambia-focused shoes and clothing storefront. The optional Supabase setup makes the product catalogue, uploaded photos, and shop WhatsApp number shared between devices, while owner-only product editing is protected by Supabase Auth and row-level security (RLS).
 
-## Preview the shop
+## Connect shared products and photos
 
-The easiest option is GitHub Pages: open **Settings → Pages**, choose **Deploy from a branch**, select `main` and `/ (root)`, then save. GitHub will show the published URL when deployment is ready. You can also download the repository and open `index.html` in a browser; a local web server is recommended for the best experience.
+1. Create a Supabase project at [supabase.com](https://supabase.com/).
+2. In **Project Settings → API**, copy the Project URL and the **anon/public** key. Put them into `config.js`. The anon key is intended for browser use; never put a `service_role` key in this website.
+3. In Supabase **SQL Editor**, run the contents of `supabase/schema.sql`.
+4. In Supabase **Authentication → Users**, create the owner's email/password account. Copy that user's UUID and run the final `insert into public.shop_admins ...` statement in the SQL editor, substituting the UUID. Disable public sign-ups after creating the owner.
+5. Publish the repository using **Settings → Pages → Deploy from a branch → main → /(root)**. Open the published site; products and uploaded photos now load from Supabase for every visitor/device. Sign in through the menu icon to add/edit/delete products.
 
-## Add your own products
+The `product-images` storage bucket is public for product display; only the owner membership allowed by RLS can upload or change photos. Use small JPG, PNG, or WebP photos (up to 2 MB). Products that were previously saved in a browser's local storage do not automatically migrate; re-add them from the owner device after setup.
 
-1. Open the shop and tap the menu icon (☰) in the top-right to open **Manage your shop**.
-2. Under **Add a product**, enter its name, price in ZMW, category, and short description.
-3. Choose a product photo from your phone or computer (JPEG/PNG/WebP; up to 2 MB), then select **Save product**.
-4. Add the shop WhatsApp number in international format using digits only, for example `260977123456`, and save it. Customers can add products to their bag, enter delivery details, select a preferred payment option, and send the order details to the shop in WhatsApp.
-5. Use **Edit** or **Delete** in the product list to manage products.
+## Payments: important setup still required
 
-## Important before taking real orders
+Checkout currently sends an order request through WhatsApp and **does not collect or verify money**. No payment is marked as successful based on a screenshot, customer message, or browser request. To enable automatic verified payments, Maggie's must first register with a Zambia-supported payment provider (for example Ontech Payments, Digital PayGo, or Just-Tap), complete their merchant onboarding, and obtain their official API/webhook documentation and sandbox/live credentials. The secure server-side checkout and signed webhook must then be implemented for the chosen provider and deployed with its secrets stored as server-side environment variables (never in `config.js` or browser code).
 
-This version is a front-end prototype. Products, photos, and the WhatsApp setting are saved in the current browser's local storage; they are **not uploaded to a shared online database**, so products added on one device do not automatically appear on other customers' devices. The sample catalogue is demo content. Remove it and add your actual stock before using the shop.
+Before implementing the provider-specific payment integration, choose your provider and share a link to its official API/webhook docs. Do not send API secrets, passwords, Mobile Money PINs, or OTPs in chat. The gateway must confirm the transaction server-to-server before an order is marked paid.
 
-Checkout creates a WhatsApp order request; it does not collect money or verify payment. The customer and shop owner must confirm stock, delivery costs, and Mobile Money instructions directly. Never ask customers for a Mobile Money PIN or OTP. Before publicly launching a real shop, connect a secure backend and a payment provider that supports your Zambian business and preferred networks, and configure hosting/domain and privacy practices.
+## Local preview
 
-## Files
-
-- `index.html` — storefront, cart, checkout and shop-management dialogs
-- `styles.css` — responsive visual styling
-- `app.js` — product catalogue, browser storage, cart and WhatsApp order flow
-
-No build step or npm packages are required.
+Open `index.html` in a browser for the local demo. Without Supabase config the sample products and browser-local editor work on that device only. No npm/build step is required. With Supabase configured, serve the repository over HTTPS (GitHub Pages is fine) and complete the setup above for shared data.
